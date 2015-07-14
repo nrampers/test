@@ -1,0 +1,201 @@
+\documentclass[12pt]{article}
+\usepackage{amsthm,amsfonts,amsmath}
+\usepackage{fullpage}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+
+\title{Dense and universal sets of words}
+\author{Narad Rampersad}
+
+\begin{document}
+\date{\today}
+\maketitle
+
+Let $w = w_1w_2 \cdots w_n$ be a word of length $n$.  For a subset $J
+= \{j_1,j_2,\ldots,j_k\} \subseteq \{1,2,\ldots,n\}$, let $w_J$ denote
+the subsequence $w_{j_1} w_{j_2} \cdots w_{j_k}$.  Similarly, if $A$
+is a set of words of length $n$, let $A_J$ denote the set $\{ w_J : w
+\in A\}$.  A set of words $A \subseteq \{{\tt 0,1}\}^n$ is
+\emph{$(n,k)$-dense} if there exists a $k$-element subset $J \subseteq
+\{1,2,\ldots,n\}$ such that $A_J = \{{\tt 0,1}\}^k$.  The set $A$ is
+\emph{$(n,k)$-universal} if for every $k$-element subset $J$ we have $A_J
+= \{{\tt 0,1}\}^k$.
+
+\begin{example}\label{dense_univ}
+Let $A$ be the set of words
+\[
+\begin{array}{cccc}
+0 & 0 & 0 & 0,\\
+0 & 1 & 0 & 1,\\
+1 & 0 & 1 & 0,\\
+1 & 1 & 1 & 1.
+\end{array}
+\]
+Then $A$ is $(4,2)$-dense, since if $J := \{1,2\}$, we have $A_J =
+\{{\tt 00,01,10,11}\}$.  However, $A$ is not $(4,2)$-universal, since
+if $J := \{1,3\}$, we have $A_J = \{{\tt 00,11}\} \neq \{{\tt
+  0,1}\}^2$.
+
+Let $B$ be the set of words
+\[
+\begin{array}{cccc}
+0 & 0 & 0 & 0,\\
+0 & 0 & 1 & 1,\\
+0 & 1 & 0 & 1,\\
+1 & 0 & 1 & 0,\\
+1 & 1 & 0 & 0,\\
+1 & 1 & 1 & 1.
+\end{array}
+\]
+Then $B$ is $(4,2)$-universal, as one may verify that for any $i < j$,
+we have $B_{\{i,j\}} = \{{\tt 0,1}\}^2$.
+\end{example}
+
+Clearly for a set $A$ to be $(n,k)$-dense it must contain a word that
+contains at least $k$ ${\tt 1}$'s.  The set
+\[
+X_{n,k} := \{w \in \{{\tt 0,1}\}^n : w \text{ does not contain $k$ {\tt 1}'s}\}
+\]
+is thus not $(n,k)$-dense.  Define
+\[
+t(n,k) := |X_{n,k}| = \sum_{i = 0}^{k-1} {n \choose i}.
+\]
+
+\begin{theorem}\label{nkdense}
+Let $A \subseteq \{{\tt 0,1}\}^n$.  If $|A| > t(n,k)$ then $A$ is
+$(n,k)$-dense.
+\end{theorem}
+
+\begin{proof}
+The proof is by induction on $n$ and $k$.  If $k=1$ then for all $n$
+we have $t(n,k) = 1$ and every set $A$ of more than $1$ element is
+clearly $(n,1)$-dense.  Suppose then that $k>1$.  Define
+\[
+B := \{x \in \{{\tt 0,1}\}^{n-1} : x \text{ is a prefix of $w$ for
+some } w \in A\}
+\]
+and
+\[
+C := \{x \in \{{\tt 0,1}\}^{n-1} : x{\tt 0} \in A \text{ and } x{\tt 1}
+\in A\}.
+\]
+Then $|A| = |B| + |C|$.  To see this, let $w \in A$ and write $w = xa$
+for some letter $a \in \{{\tt 0,1}\}$.  If $x\overline{a} \notin A$,
+then the $x$ in $B$ accounts for $w$ in $A$.  If $x\overline{a} \in
+A$, then the $x$ in $B$ accounts for one of $xa,x\overline{a}$ in $A$
+and the $x$ in $C$ accounts for the other.  Thus, $|A| = |B| + |C|$.
+If $|B| > t(n-1,k)$, then by induction $B$ is $(n-1,k)$-dense, which
+implies that $A$ is $(n,k)$-dense.  Suppose then that $|B| \leq
+t(n-1,k)$.  We then have
+\begin{eqnarray*}
+|C| & = & |A| - |B| \\
+& > & t(n,k) - t(n-1,k) \\
+& = & \sum_{i = 0}^{k-1} {n \choose i} - \sum_{i = 0}^{k-1} {n-1 \choose
+i} \\
+& = & \sum_{i = 0}^{k-1} \left( {n \choose i} - {n-1 \choose i}
+\right) \\
+& = & \sum_{i = 1}^{k-1} {n - 1 \choose i - 1} \\
+& = & \sum_{i = 0}^{k-2} {n - 1 \choose i} \\
+& = & t(n-1,k-1),
+\end{eqnarray*}
+where we have used the ``Pascal's triangle'' identity ${n \choose i} =
+{n-1 \choose i-1} + {n-1 \choose i}$.  Since $|C| > t(n-1,k-1)$, we
+can apply the induction hypothesis to conclude that $C$ is
+$(n-1,k-1)$-dense.  However, $C\{{\tt 0,1}\} \subseteq A$, and so $A$
+is $(n,k)$-dense.
+\end{proof}
+
+\begin{example}
+For $n=4$ and $k=2$, we have
+\begin{eqnarray*}
+t(4,2) & = & \sum_{i=0}^1 {4 \choose i}\\
+& = & {4 \choose 0} + {4 \choose 1}\\
+& = & 1 + 4\\
+& = & 5.
+\end{eqnarray*}
+Thus every set $A$ of at least $6$ binary words of length $4$ is
+$(4,2)$-dense.
+\end{example}
+
+Next we show the existence of small $(n,k)$-universal sets.  We begin
+with the special case $k=2$.
+
+\begin{theorem}\label{n2univ}
+For $n \geq 2$ there is an $(n,2)$-universal set of size $2\lceil
+\log_2 n \rceil + 2$.
+\end{theorem}
+
+\begin{proof}
+We define such a set $A$ as follows.  Let $t := \lceil
+\log_2 n \rceil$.  Define $M$ to be the $t \times n$ matrix
+whose columns consist of the binary representations of the integers
+$0,1,\ldots,n-1$.  Let $B$ denote the set of words of length $n$
+obtained by taking each row of $M$ as a word.  We define
+\[
+A := \{{\tt 0}^n, {\tt 1}^n\} \cup B \cup B',
+\]
+where $B'$ is the set of words formed by taking the binary complements of
+the words in $B$.
+
+Consider any pair of indices $J := \{i < j\}$.  Since ${\tt 0}^n \in A$, we
+have ${\tt 00} \in A_J$, and similarly ${\tt 11} \in A_J$.
+Furthermore, since the columns of $M$ were distinct, there must be a
+word $w \in B$ whose $i$-th and $j$-th symbols are different (say
+$w_i = {\tt 0}$ and $w_j = {\tt 1}$), so that ${\tt 01} \in A_J$.  Since
+$A$ also contains the complements of the words in $B$, we also have
+${\tt 10} \in A_J$.  Thus $A_J$ consists of all binary words of length
+$2$, as required.
+\end{proof}
+
+\begin{example}
+For $n=4$ and $k=2$, set $t := 2$ and define the $2 \times 4$ matrix
+\[
+M := \left[
+\begin{array}{cccc}
+0 & 0 & 1 & 1\\
+0 & 1 & 0 & 1
+\end{array}
+\right].
+\]
+Then $B = \{{\tt 0011, 0101}\}$, $B' = \{{\tt 1100, 101}0\}$, and
+$A = \{{\tt 0000, 1111}\} \cup B \cup B'$.  We have already seen in
+Example~\ref{dense_univ} that $A$ is $(4,2)$-universal.
+\end{example}
+
+For larger values of $k$, we use the probabilistic method.
+
+\begin{theorem}\label{nkuniv}
+For $n \geq 2$ and $k \geq 3$ there is an $(n,k)$-universal set of
+size $k2^k\lceil\log n + 1\rceil$.
+\end{theorem}
+
+\begin{proof}
+Let $t$ be an integer satisfying
+\begin{equation}\label{non_univ}
+{n \choose k}2^k(1-2^{-k})^t < 1
+\end{equation}
+and let $A$ be a set of $t$ random words of length $n$.  Each word in $A$
+is chosen by selecting each letter from $\{{\tt 0,1}\}$ independently
+at random with probability $1/2$.  For every set $J$ of $k$ indices
+and every word $x \in \{{\tt 0,1}\}^k$, the probability that $x \notin
+A_J$ is $(1-2^{-k})^t$.  Since there are ${n \choose k}$ choices for
+$J$ and $2^k$ choices for $x$, the probability that $A_J \neq \{{\tt
+0,1}\}^k$ is
+\[
+{n \choose k}2^k(1-2^{-k})^t,
+\]
+which is less than $1$ by our choice of $t$.  Thus with positive
+probability $A$ is $(n,k)$-universal.
+Using the inequalities ${n \choose k} < (ne/k)^k$ and $(1-2^{-k})^t
+\leq e^{-t/2^k}$, one verifies that when $k \geq 3$, (\ref{non_univ})
+holds for $t = k2^k\lceil\log n + 1\rceil$.
+\end{proof}
+
+Theorem~\ref{nkdense} is due (independently) to Perles and Shelah (see
+Shelah [1972]), Sauer [1972], and Vapnik and Chervonenkis [1971].
+Theorem~\ref{n2univ} is due to Chandra, Kou, Markowsky, and Zaks
+[1983].  Theorem~\ref{nkuniv} is due to Kleitman and Spencer [1973].
+\end{document}
